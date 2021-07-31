@@ -9,14 +9,20 @@ import ProductCard from "../../components/productCard";
 import StoreWithStock from "../../Interfaces/StoreWithStock";
 import ListItem from "@material-ui/core/ListItem";
 import List from "@material-ui/core/List";
-import { Container, Typography } from "@material-ui/core";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
 import Grid from "@material-ui/core/Grid";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import WineTypeSelector from "../../components/wineTypeSelector";
 
-const STEP_SIZE: number = 10;
-const MIN_PRICE: number = 50;
-const MAX_PRICE: number = 300;
+const STEP_SIZE = 10;
+const MIN_PRICE = 50;
+const MAX_PRICE = 300;
+
+const wineTypes = ["rødvin", "hvitvin"];
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -32,18 +38,27 @@ const useStyles = makeStyles(() =>
 const storePage = (props: {
   stores: Store[],
   storesWithStock: StoreWithStock[],
-  products: Product[],
+  products: Record<string, Product[]>,
   id: number
   key: number
 }) => {
   const classes = useStyles();
-  const [visibleProducts, setVisibleProducts] = useState<Product[]>(props.products)
+  const [wineType, setWineType] = useState<string>("rødvin");
+  const [price, setPrice] = useState<number>(Infinity);
+  const [visibleProducts, setVisibleProducts] = useState<Product[]>(props.products["rødvin"])
 
-  const handleSliderChange = (event: any, newValue: number | number[]) => {
+  const handleWineTypeChange = (newWineType: string) => {
+    setWineType(newWineType);
+    setVisibleProducts(props.products[newWineType]);
+    setPrice(Infinity);
+  };
+
+  const handleSliderChange = (event: any, newValue: number) => {
     if (newValue > MAX_PRICE) {
       newValue = Infinity;
     }
-    const updatedProducts = props.products.filter(product => product.price.value < newValue)
+    const updatedProducts = props.products[wineType].filter(product => product.price.value < newValue)
+    setPrice(newValue);
     setVisibleProducts(updatedProducts);
   };
 
@@ -60,6 +75,7 @@ const storePage = (props: {
         <Typography variant="h4" align="center">
           {storeWithStock.name}
         </Typography>
+        <WineTypeSelector wineType={wineType} wineTypes={wineTypes} onChange={handleWineTypeChange} />
         <Grid container spacing={2} alignItems="center">
           <Grid item>
             <Typography id="discrete-slider" gutterBottom>
@@ -68,8 +84,8 @@ const storePage = (props: {
           </Grid>
           <Grid item xs>
             <Slider
+              value={price}
               className={classes.slider}
-              defaultValue={Infinity}
               aria-labelledby="discrete-slider"
               valueLabelDisplay="auto"
               valueLabelFormat={(x) => x > MAX_PRICE ? MAX_PRICE + "+" : x}
@@ -102,10 +118,16 @@ async function readStoresFromFile(): Promise<Store[]> {
 }
 
 async function readProductsFromFile(): Promise<Record<string, Product>> {
-  const productsFilePath = path.join(process.cwd(), "data/products.json");
-  const productsFile = await fs.readFile(productsFilePath);
-  const productsObj = JSON.parse(productsFile.toString());
-  return productsObj
+  const wineTypes = ["rødvin", "hvitvin"];
+  let products: Record<string, Product> = {}
+  for (const wine of wineTypes) {
+    const productsFilePath = path.join(process.cwd(), `data/${wine}.json`);
+    const productsFile = await fs.readFile(productsFilePath);
+    const productsObj = JSON.parse(productsFile.toString());
+
+    products[wine] = { ...productsObj }
+  }
+  return products
 }
 
 async function readStoreStockFromFile(): Promise<StoreWithStock[]> {
@@ -133,18 +155,20 @@ export async function getStaticProps(context) {
   const stores = await readStoresFromFile();
   const products = await readProductsFromFile();
   const storeStock = await readStoreStockFromFile();
-  let productsInStock: Product[] = [];
+  let productsInStock: Record<string, Product[]> = {};
   const storeWithStock = storeStock.find(s => s.id == context.params.id)
   Object.entries(storeWithStock.stock)
-    .forEach(([product_type, items]) => {
+    .forEach(([wine_type, items]) => {
+      let stock = []
       items.forEach(item => {
-        if (products[item.code]) {
-          products[item.code]["stock"] = item.stock
-          productsInStock.push(products[item.code])
+        if (products[wine_type][item.code]) {
+          products[wine_type][item.code]["stock"] = item.stock
+          stock.push(products[wine_type][item.code])
         }
       })
+      stock.sort((a, b) => b.score - a.score);
+      productsInStock[wine_type] = stock;
     });
-  productsInStock.sort((a, b) => b.score - a.score);
   return {
     props: {
       stores: stores,

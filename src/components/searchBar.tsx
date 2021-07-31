@@ -82,6 +82,11 @@ const useLabelStyle = makeStyles(() =>
 );
 
 const SearchBar = (props: { stores: Store[] }) => {
+  const classes = useStyles();
+  const autocompleteClasses = useAutocompleteSyle();
+  const inputClasses = useInputStyle();
+  const labelClasses = useLabelStyle();
+
   const [store, setStore] = useState<Store | null>(null);
   const router = useRouter()
   const onStoreChange = (event: any, newValue: Store | null) => {
@@ -99,10 +104,8 @@ const SearchBar = (props: { stores: Store[] }) => {
     }
   }
 
-  const classes = useStyles();
-  const autocompleteClasses = useAutocompleteSyle();
-  const inputClasses = useInputStyle();
-  const labelClasses = useLabelStyle();
+
+  const searchUrl = store ? `/stores/${encodeURIComponent(store?.id)}` : "#";
   return (
     <AppBar>
       <Toolbar className={classes.justifycenter}>
@@ -136,7 +139,7 @@ const SearchBar = (props: { stores: Store[] }) => {
             />
           }
         />
-        <Link href={`/stores/${encodeURIComponent(store?.id)}`}>
+        <Link href={searchUrl}>
           <IconButton onClick={onSearch}>
             <SearchIcon style={{ color: "white" }} fontSize="large" />
           </IconButton>

@@ -54,7 +54,7 @@ const ProductCard = (props: { product: Product }) => {
             xs={9}
             className={classes.content}
           >
-            <Grid item style={{ paddingTop: "16px" }}>
+            <Grid item style={{ paddingTop: "1em", paddingRight: "1em" }}>
               <Typography>{props.product.name}</Typography>
             </Grid>
             <Grid item>

@@ -15,6 +15,14 @@ interface Volume {
   formattedValue: string
 }
 
+interface MainCategory {
+  name: string,
+}
+
+interface MainCountry {
+  name: string,
+}
+
 interface Product {
   code: string,
   name: string,
@@ -24,6 +32,8 @@ interface Product {
   images: Image[],
   volume: Volume
   price: Price,
+  main_category: MainCategory,
+  main_country: MainCountry
 }
 
 export default Product;
