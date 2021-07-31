@@ -57,10 +57,17 @@ const storePage = (props: {
     if (newValue > MAX_PRICE) {
       newValue = Infinity;
     }
-    const updatedProducts = props.products[wineType].filter(product => product.price.value < newValue)
     setPrice(newValue);
-    setVisibleProducts(updatedProducts);
   };
+
+  const handleSliderCommit = (event: any, newValue: number) => {
+    if (newValue > MAX_PRICE) {
+      newValue = Infinity;
+    }
+
+    const updatedProducts = props.products[wineType].filter(product => product.price.value < newValue)
+    setVisibleProducts(updatedProducts);
+  }
 
   const storeWithStock = props.storesWithStock.find(s => s.id == props.id)
   const productCards = visibleProducts.map(product =>
@@ -89,10 +96,12 @@ const storePage = (props: {
               aria-labelledby="discrete-slider"
               valueLabelDisplay="auto"
               valueLabelFormat={(x) => x > MAX_PRICE ? MAX_PRICE + "+" : x}
+              defaultValue={Infinity}
               step={STEP_SIZE}
               min={MIN_PRICE}
               max={MAX_PRICE + 10}
-              onChangeCommitted={handleSliderChange}
+              onChange={handleSliderChange}
+              onChangeCommitted={handleSliderCommit}
             />
           </Grid>
         </Grid>
