@@ -1,15 +1,12 @@
 import React from "react";
 
-import styles from "../../styles/Home.module.css"
 import { makeStyles, createStyles } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
 
 import SearchBar from "../components/searchBar";
-import getStores from "../helpers/getStores";
+import { getStores } from "../helpers/cloudStorageClient";
 import Container from "@material-ui/core/Container";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 
 export async function getStaticProps() {
   const stores = await getStores();

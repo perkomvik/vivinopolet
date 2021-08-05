@@ -28,12 +28,14 @@ interface Product {
   name: string,
   url: string,
   score: number,
+  n_ratings: number,
   vivino_url: string,
   images: Image[],
   volume: Volume
   price: Price,
   main_category: MainCategory,
-  main_country: MainCountry
+  main_country: MainCountry,
+  stock: number,
 }
 
 export default Product;

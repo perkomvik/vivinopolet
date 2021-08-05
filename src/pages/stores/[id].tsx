@@ -1,5 +1,5 @@
 import SearchBar from "../../components/searchBar";
-import getStores from "../../helpers/getStores";
+import { getProducts, getStores, getStoresWithStock } from "../../helpers/cloudStorageClient";
 import path from "path";
 import fs from "fs/promises"
 import Store from "../../Interfaces/Store";
@@ -14,15 +14,12 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Slider from "@material-ui/core/Slider";
 import Grid from "@material-ui/core/Grid";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import ToggleButton from "@material-ui/lab/ToggleButton";
 import WineTypeSelector from "../../components/wineTypeSelector";
+import Constants from "../../helpers/constants";
 
 const STEP_SIZE = 10;
 const MIN_PRICE = 50;
 const MAX_PRICE = 300;
-
-const wineTypes = ["rødvin", "hvitvin"];
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -31,6 +28,9 @@ const useStyles = makeStyles(() =>
     },
     slider: {
       maxWidth: "95%",
+    },
+    sliderContainer: {
+      maxWidth: "400px",
     }
   })
 );
@@ -71,7 +71,7 @@ const storePage = (props: {
 
   const storeWithStock = props.storesWithStock.find(s => s.id == props.id)
   const productCards = visibleProducts.map(product =>
-    <ListItem className={classes.listItem} key={product.code}>
+    <ListItem className={classes.listItem} key={product.code} disableGutters>
       <ProductCard product={product} />
     </ListItem>
   )
@@ -82,14 +82,14 @@ const storePage = (props: {
         <Typography variant="h4" align="center">
           {storeWithStock.name}
         </Typography>
-        <WineTypeSelector wineType={wineType} wineTypes={wineTypes} onChange={handleWineTypeChange} />
-        <Grid container spacing={2} alignItems="center">
+        <WineTypeSelector wineType={wineType} wineTypes={Constants.wineTypes} onChange={handleWineTypeChange} />
+        <Grid container spacing={2} justifyContent="center" style={{ marginTop: "0px" }}>
           <Grid item>
-            <Typography id="discrete-slider" gutterBottom>
+            <Typography variant="h6" id="discrete-slider" gutterBottom>
               Makspris
             </Typography>
           </Grid>
-          <Grid item xs>
+          <Grid item xs className={classes.sliderContainer}>
             <Slider
               value={price}
               className={classes.slider}
@@ -115,40 +115,55 @@ const storePage = (props: {
 }
 
 const storesFilePath = path.join(process.cwd(), "data/stores.json");
+const storesWithStockFilePath = path.join(process.cwd(), "data/stores_with_stock.json");
 
-function saveStoresToFile(stores) {
-  return fs.writeFile(storesFilePath, JSON.stringify(stores));
+const saveStoresToFile = async (stores) => {
+  await fs.writeFile(storesFilePath, JSON.stringify(stores));
 }
 
-async function readStoresFromFile(): Promise<Store[]> {
+const saveStoreStockToFile = async (storesWithStock) => {
+  await fs.writeFile(storesWithStockFilePath, JSON.stringify(storesWithStock));
+}
+
+const saveProductsToFile = async (wineType: string, products: Record<string, Product>) => {
+  await fs.writeFile(`data/${wineType}.json`, JSON.stringify(products));
+}
+
+const readStoresFromFile = async (): Promise<Store[]> => {
   const storesFile = await fs.readFile(storesFilePath);
   const storeObj = JSON.parse(storesFile.toString());
   return storeObj;
 }
 
-async function readProductsFromFile(): Promise<Record<string, Product>> {
-  const wineTypes = ["rødvin", "hvitvin"];
-  let products: Record<string, Product> = {}
-  for (const wine of wineTypes) {
-    const productsFilePath = path.join(process.cwd(), `data/${wine}.json`);
+const readProductsFromFile = async (): Promise<Record<string, Record<string, Product>>> => {
+  let products: Record<string, Record<string, Product>> = {}
+  for (const wineType of Constants.wineTypes) {
+    const productsFilePath = path.join(process.cwd(), `data/${wineType}.json`);
     const productsFile = await fs.readFile(productsFilePath);
-    const productsObj = JSON.parse(productsFile.toString());
+    const productsObj: Record<string, Product> = JSON.parse(productsFile.toString());
 
-    products[wine] = { ...productsObj }
+    products[wineType] = { ...productsObj }
   }
   return products
 }
 
-async function readStoreStockFromFile(): Promise<StoreWithStock[]> {
-  const storeStockFilePath = path.join(process.cwd(), "data/store_stock.json");
+const readStoreStockFromFile = async (): Promise<StoreWithStock[]> => {
+  const storeStockFilePath = path.join(storesWithStockFilePath);
   const storeStockFile = await fs.readFile(storeStockFilePath);
-  const storeStockObj = JSON.parse(storeStockFile.toString());
-  return storeStockObj
+  const storeStock = JSON.parse(storeStockFile.toString());
+  return storeStock;
 }
 
 export async function getStaticPaths() {
   const stores: Store[] = await getStores();
+  const storesWithStock: StoreWithStock[] = await getStoresWithStock();
   await saveStoresToFile(stores);
+  await saveStoreStockToFile(storesWithStock);
+  for (const wineType of Constants.wineTypes) {
+    const products = await getProducts(wineType);
+    await saveProductsToFile(wineType, products);
+  }
+
   const paths = stores.map((store) => ({
     params: {
       id: store.id,

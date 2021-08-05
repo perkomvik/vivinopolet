@@ -8,6 +8,9 @@ import { makeStyles, createStyles } from "@material-ui/core/styles";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import StarsIcon from '@material-ui/icons/Stars';
+import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import { mapCountryToCode } from "../helpers/countryUtils";
+import Flag from 'react-world-flags'
 
 const vinmonopolet_url = "https://vinmonopolet.no"
 
@@ -34,9 +37,16 @@ const useStyles = makeStyles(() =>
   })
 );
 
+const flagStyle = {
+  position: "relative",
+  top: "50%",
+  transform: "translateY(-50%)",
+}
+
 const ProductCard = (props: { product: Product }) => {
   const classes = useStyles();
   const image = props.product.images.find(img => img.format === "product")
+  const countryCode = mapCountryToCode(props.product.main_country.name);
   return (
     <Card className={classes.root}>
       <CardActionArea href={vinmonopolet_url + props.product.url} target="_blank"
@@ -59,12 +69,23 @@ const ProductCard = (props: { product: Product }) => {
             </Grid>
             <Grid item>
               <Grid container justifyContent="flex-start">
-                <Grid item style={{ paddingRight: "5px", marginLeft: "-2px" }}>
+                <Grid item style={{ paddingRight: "0.5em", marginLeft: "-2px" }}>
                   <StarsIcon />
+                </Grid>
+                <Grid item style={{ minWidth: "125px" }}>
+                  <Typography display="inline">
+                    {props.product.score}
+                  </Typography>
+                  <Typography variant="caption" display="inline">
+                    {" (" + props.product.n_ratings + ")"}
+                  </Typography>
+                </Grid>
+                <Grid item style={{ marginRight: "0.5em" }}>
+                  <ShoppingBasketIcon />
                 </Grid>
                 <Grid item>
                   <Typography>
-                    {props.product.score}
+                    {props.product.stock}
                   </Typography>
                 </Grid>
               </Grid>
@@ -74,11 +95,14 @@ const ProductCard = (props: { product: Product }) => {
                 container
                 justifyContent="space-between"
               >
-                <Grid item xs={6}>
+                <Grid item xs={3}>
                   <Typography variant="caption" color="textSecondary">{props.product.volume.formattedValue}</Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={5}>
                   <Typography variant="caption" color="textSecondary">{props.product.price.formattedValue}</Typography>
+                </Grid>
+                <Grid item xs={3}>
+                  <Flag style={flagStyle} code={countryCode} height="16" />
                 </Grid>
               </Grid>
             </Grid>
