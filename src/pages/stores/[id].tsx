@@ -91,6 +91,9 @@ const storePage = (props: {
       createStyles({
         tooltipPlacementTop: {
           marginBottom: "1.25em",
+        },
+        popper: {
+          zIndex: 1000,
         }
       })
     );

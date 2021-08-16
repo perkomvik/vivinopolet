@@ -107,7 +107,7 @@ const SearchBar = (props: { stores: Store[] }) => {
 
   const searchUrl = store ? `/stores/${encodeURIComponent(store?.id)}` : "#";
   return (
-    <AppBar style={{ zIndex: 1501 }}>
+    <AppBar>
       <Toolbar className={classes.justifycenter}>
         <div className={classes.grow}>
           <Link href="/">
