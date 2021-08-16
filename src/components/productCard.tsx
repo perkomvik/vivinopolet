@@ -18,7 +18,7 @@ const useStyles = makeStyles(() =>
   createStyles({
     root: {
       flexGrow: 1,
-      maxWidth: "400px"
+      maxWidth: "600px"
     },
     media: {
       height: "175px",
@@ -72,7 +72,7 @@ const ProductCard = (props: { product: Product }) => {
                 <Grid item style={{ paddingRight: "0.5em", marginLeft: "-2px" }}>
                   <StarsIcon />
                 </Grid>
-                <Grid item style={{ minWidth: "125px" }}>
+                <Grid item style={{ minWidth: "50%" }}>
                   <Typography display="inline">
                     {props.product.score}
                   </Typography>

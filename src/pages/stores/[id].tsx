@@ -31,7 +31,7 @@ const useStyles = makeStyles(() =>
       maxWidth: "95%",
     },
     sliderContainer: {
-      maxWidth: "400px",
+      maxWidth: "500px",
     }
   })
 );
@@ -86,16 +86,18 @@ const storePage = (props: {
     <Container>
       <SearchBar stores={props.stores} />
       <div style={{ paddingTop: "7em" }}>
-        <Grid container justifyContent="space-between" wrap="nowrap">
-          <Grid item>
-            <Typography variant="h5">
-              {storeWithStock.name}
-            </Typography>
-          </Grid>
-          <Grid item>
-            <WineTypeSelector wineType={wineType} wineTypes={Constants.wineTypes} onChange={handleWineTypeChange} />
-          </Grid>
-        </Grid >
+        <Container maxWidth="sm">
+          <Grid container justifyContent="space-between" wrap="nowrap">
+            <Grid item>
+              <Typography variant="h5">
+                {storeWithStock.name}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <WineTypeSelector wineType={wineType} wineTypes={Constants.wineTypes} onChange={handleWineTypeChange} />
+            </Grid>
+          </Grid >
+        </Container>
 
         <Grid container spacing={2} justifyContent="center" style={{ marginTop: "2em" }}>
           <Grid item>
