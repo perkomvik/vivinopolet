@@ -16,6 +16,7 @@ import Slider from "@material-ui/core/Slider";
 import Grid from "@material-ui/core/Grid";
 import WineTypeSelector from "../../components/wineTypeSelector";
 import Constants from "../../helpers/constants";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const STEP_SIZE = 10;
 const MIN_PRICE = 50;
@@ -49,21 +50,16 @@ const storePage = (props: {
 
   const handleWineTypeChange = (newWineType: string) => {
     setWineType(newWineType);
-    setVisibleProducts(props.products[newWineType]);
-    setPrice(Infinity);
-  };
 
-  const handleSliderChange = (event: any, newValue: number) => {
-    if (newValue > MAX_PRICE) {
-      newValue = Infinity;
-    }
-    setPrice(newValue);
+    const updatedProducts = props.products[newWineType].filter(product => product.price.value < price)
+    setVisibleProducts(updatedProducts);
   };
 
   const handleSliderCommit = (event: any, newValue: number) => {
     if (newValue > MAX_PRICE) {
       newValue = Infinity;
     }
+    setPrice(newValue);
 
     const updatedProducts = props.products[wineType].filter(product => product.price.value < newValue)
     setVisibleProducts(updatedProducts);
@@ -75,15 +71,33 @@ const storePage = (props: {
       <ProductCard product={product} />
     </ListItem>
   )
+
+  const ValueLabelComponent = (props) => {
+    const { children, open, value } = props;
+
+    return (
+      <Tooltip open={open} enterTouchDelay={0} placement="top" title={value}>
+        {children}
+      </Tooltip>
+    );
+  }
+
   return (
     <Container>
       <SearchBar stores={props.stores} />
-      <div style={{ paddingTop: "6em" }}>
-        <Typography variant="h4" align="center">
-          {storeWithStock.name}
-        </Typography>
-        <WineTypeSelector wineType={wineType} wineTypes={Constants.wineTypes} onChange={handleWineTypeChange} />
-        <Grid container spacing={2} justifyContent="center" style={{ marginTop: "0px" }}>
+      <div style={{ paddingTop: "7em" }}>
+        <Grid container justifyContent="space-between" wrap="nowrap">
+          <Grid item>
+            <Typography variant="h5">
+              {storeWithStock.name}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <WineTypeSelector wineType={wineType} wineTypes={Constants.wineTypes} onChange={handleWineTypeChange} />
+          </Grid>
+        </Grid >
+
+        <Grid container spacing={2} justifyContent="center" style={{ marginTop: "2em" }}>
           <Grid item>
             <Typography variant="h6" id="discrete-slider" gutterBottom>
               Makspris
@@ -91,21 +105,20 @@ const storePage = (props: {
           </Grid>
           <Grid item xs className={classes.sliderContainer}>
             <Slider
-              value={price}
               className={classes.slider}
               aria-labelledby="discrete-slider"
-              valueLabelDisplay="auto"
-              valueLabelFormat={(x) => x > MAX_PRICE ? MAX_PRICE + "+" : x}
+              ValueLabelComponent={ValueLabelComponent}
+              valueLabelDisplay="on"
+              valueLabelFormat={(x) => x > MAX_PRICE ? "kr " + MAX_PRICE + "+" : "kr " + x}
               defaultValue={Infinity}
               step={STEP_SIZE}
               min={MIN_PRICE}
               max={MAX_PRICE + 10}
-              onChange={handleSliderChange}
               onChangeCommitted={handleSliderCommit}
             />
           </Grid>
         </Grid>
-      </div>
+      </div >
       <List>
         {productCards}
       </List>

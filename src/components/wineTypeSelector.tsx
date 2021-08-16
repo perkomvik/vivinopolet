@@ -65,7 +65,7 @@ const WineTypeSelector = (props: Props) => {
   }
 
   return (
-    <Container className={classes.toggleButtons}>
+    <div>
       <ToggleButtonGroup
         value={props.wineType}
         exclusive
@@ -84,7 +84,7 @@ const WineTypeSelector = (props: Props) => {
           </Typography>
         </ToggleButton>
       </ToggleButtonGroup>
-    </Container>
+    </div>
   );
 }
 
