@@ -13,7 +13,7 @@ const useStyles = makeStyles(() =>
     toggleButtons: {
       display: "flex",
       justifyContent: "center",
-      marginTop: "15px"
+      marginTop: "1em"
     },
   })
 );
@@ -65,7 +65,7 @@ const WineTypeSelector = (props: Props) => {
   }
 
   return (
-    <div>
+    <div className={classes.toggleButtons}>
       <ToggleButtonGroup
         value={props.wineType}
         exclusive

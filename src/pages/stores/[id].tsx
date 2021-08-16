@@ -74,30 +74,42 @@ const storePage = (props: {
 
   const ValueLabelComponent = (props) => {
     const { children, open, value } = props;
-
+    const popperProps = {
+      disablePortal: true,
+      popperOptions: {
+        modifiers: {
+          flip: {
+            enabled: false,
+          },
+          preventOverflow: {
+            enabled: true,
+          }
+        }
+      }
+    };
+    const useTooltipStyles = makeStyles(() =>
+      createStyles({
+        tooltipPlacementTop: {
+          marginBottom: "1.25em",
+        }
+      })
+    );
     return (
-      <Tooltip open={open} enterTouchDelay={0} placement="top" title={value}>
+      <Tooltip classes={useTooltipStyles()} open={open} enterTouchDelay={0} placement="top" title={value}
+        PopperProps={popperProps} >
         {children}
-      </Tooltip>
+      </Tooltip >
     );
   }
 
   return (
     <Container>
       <SearchBar stores={props.stores} />
-      <div style={{ paddingTop: "7em" }}>
-        <Container maxWidth="sm">
-          <Grid container justifyContent="space-between" wrap="nowrap">
-            <Grid item>
-              <Typography variant="h5">
-                {storeWithStock.name}
-              </Typography>
-            </Grid>
-            <Grid item>
-              <WineTypeSelector wineType={wineType} wineTypes={Constants.wineTypes} onChange={handleWineTypeChange} />
-            </Grid>
-          </Grid >
-        </Container>
+      <div style={{ paddingTop: "6.5em" }}>
+        <Typography variant="h5" align="center">
+          {storeWithStock.name}
+        </Typography>
+        <WineTypeSelector wineType={wineType} wineTypes={Constants.wineTypes} onChange={handleWineTypeChange} />
 
         <Grid container spacing={2} justifyContent="center" style={{ marginTop: "2em" }}>
           <Grid item>
