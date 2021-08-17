@@ -1,5 +1,6 @@
 import lightGreen from "@material-ui/core/colors/lightGreen";
 import red from "@material-ui/core/colors/red";
+import yellow from "@material-ui/core/colors/yellow";
 import { createTheme } from "@material-ui/core/styles";
 
 const theme = createTheme({
@@ -21,6 +22,9 @@ const theme = createTheme({
     secondary: {
       main: lightGreen[500]
     },
+    warning: {
+      main: yellow[700]
+    }
   },
 });
 

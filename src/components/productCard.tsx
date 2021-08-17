@@ -5,17 +5,24 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Product from "../Interfaces/Product";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
+import WarningIcon from "@material-ui/icons/Warning";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import StarsIcon from '@material-ui/icons/Stars';
 import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
 import { mapCountryToCode } from "../helpers/countryUtils";
 import Flag from 'react-world-flags'
+import Link from "@material-ui/core/Link";
 
 const vinmonopolet_url = "https://vinmonopolet.no"
 
-const useStyles = makeStyles(() =>
+const useStyles = makeStyles((theme) =>
   createStyles({
+    warning: {
+      color: theme.palette.warning.main,
+      fontSize: "inherit",
+      verticalAlign: "middle",
+    },
     root: {
       flexGrow: 1,
       maxWidth: "600px"
@@ -47,6 +54,18 @@ const ProductCard = (props: { product: Product }) => {
   const classes = useStyles();
   const image = props.product.images.find(img => img.format === "product")
   const countryCode = mapCountryToCode(props.product.main_country.name);
+
+  const renderNRatings = () => {
+    const nRatings = props.product.n_ratings;
+    const shouldDisplayWarning = nRatings < 500;
+    return (
+      <>
+        <Typography variant="caption" display="inline">
+          &nbsp;({nRatings}{shouldDisplayWarning && <WarningIcon className={classes.warning} />})
+        </Typography>
+      </>
+    );
+  };
   return (
     <Card className={classes.root}>
       <CardActionArea href={vinmonopolet_url + props.product.url} target="_blank"
@@ -73,12 +92,12 @@ const ProductCard = (props: { product: Product }) => {
                   <StarsIcon />
                 </Grid>
                 <Grid item style={{ minWidth: "50%" }}>
-                  <Typography display="inline">
-                    {props.product.score}
-                  </Typography>
-                  <Typography variant="caption" display="inline">
-                    {" (" + props.product.n_ratings + ")"}
-                  </Typography>
+                  <Link href={props.product.vivino_url} color="inherit" target="_blank">
+                    <Typography display="inline">
+                      {props.product.score}
+                    </Typography>
+                    {renderNRatings()}
+                  </Link>
                 </Grid>
                 <Grid item style={{ marginRight: "0.5em" }}>
                   <ShoppingBasketIcon />
