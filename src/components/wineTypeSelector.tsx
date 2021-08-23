@@ -1,5 +1,4 @@
-import { lightGreen } from "@material-ui/core/colors";
-import Container from "@material-ui/core/Container";
+import { lightGreen, green } from "@material-ui/core/colors";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -23,9 +22,9 @@ const useRedWineStyle = makeStyles((theme: Theme) =>
     root: {
       '&$selected': {
         color: "white",
-        backgroundColor: theme.palette.primary.light,
+        backgroundColor: theme.palette.primary.dark,
         '&:hover': {
-          backgroundColor: theme.palette.primary.light,
+          backgroundColor: theme.palette.primary.dark,
         }
       },
     },
@@ -47,6 +46,21 @@ const useWhiteWineStyle = makeStyles((theme: Theme) =>
   })
 );
 
+const useBubbleStyle = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      '&$selected': {
+        color: "white",
+        backgroundColor: green[800],
+        '&:hover': {
+          backgroundColor: green[800],
+        }
+      }
+    },
+    selected: {},
+  })
+);
+
 interface Props {
   wineType: string,
   wineTypes: string[],
@@ -57,6 +71,7 @@ const WineTypeSelector = (props: Props) => {
   const classes = useStyles();
   const redWineClasses = useRedWineStyle();
   const whiteWineClasses = useWhiteWineStyle();
+  const bubbleClasses = useBubbleStyle();
 
   const onChange = (event: React.MouseEvent<HTMLElement, MouseEvent>, newValue: string) => {
     if (newValue !== null) {
@@ -81,6 +96,11 @@ const WineTypeSelector = (props: Props) => {
         <ToggleButton classes={whiteWineClasses} value="hvitvin" aria-label="rødvin">
           <Typography variant="subtitle2">
             Hvitvin
+          </Typography>
+        </ToggleButton>
+        <ToggleButton classes={bubbleClasses} value="musserende_vin" aria-label="musserende">
+          <Typography variant="subtitle2">
+            Musserende
           </Typography>
         </ToggleButton>
       </ToggleButtonGroup>
