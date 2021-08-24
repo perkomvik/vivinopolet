@@ -21,7 +21,7 @@ export const getStores = async (local = false): Promise<Store[]> => {
 
 export const getStoresWithStock = async (): Promise<StoreWithStock[]> => {
   const storage = new Storage();
-  const file = await storage.bucket("vivinopolet-data").file("stores_with_stock.json").download();
+  const file = await storage.bucket("vivinopolet-data").file("stores.json").download();
   const storesWithStock: StoreWithStock[] = JSON.parse(file.toString());
   return storesWithStock;
 }
