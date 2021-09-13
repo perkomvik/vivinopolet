@@ -51,7 +51,7 @@ const storePage = (props: {
   const handleWineTypeChange = (newWineType: string) => {
     setWineType(newWineType);
 
-    const updatedProducts = props.products[newWineType].filter(product => product.price.value < price)
+    const updatedProducts = props.products[newWineType]?.filter(product => product.price.value < price) ?? []
     setVisibleProducts(updatedProducts);
   };
 

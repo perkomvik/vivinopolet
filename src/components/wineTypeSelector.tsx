@@ -1,4 +1,4 @@
-import { lightGreen, green } from "@material-ui/core/colors";
+import { lightGreen, green, red } from "@material-ui/core/colors";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import { Theme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -36,9 +36,25 @@ const useWhiteWineStyle = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       '&$selected': {
+        color: "white",
         backgroundColor: lightGreen[300],
         '&:hover': {
           backgroundColor: lightGreen[300],
+        }
+      }
+    },
+    selected: {},
+  })
+);
+
+const useRoseStyle = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      '&$selected': {
+        color: "white",
+        backgroundColor: red[300],
+        '&:hover': {
+          backgroundColor: red[300],
         }
       }
     },
@@ -71,6 +87,7 @@ const WineTypeSelector = (props: Props) => {
   const classes = useStyles();
   const redWineClasses = useRedWineStyle();
   const whiteWineClasses = useWhiteWineStyle();
+  const roseClasses = useRoseStyle();
   const bubbleClasses = useBubbleStyle();
 
   const onChange = (event: React.MouseEvent<HTMLElement, MouseEvent>, newValue: string) => {
@@ -96,6 +113,11 @@ const WineTypeSelector = (props: Props) => {
         <ToggleButton classes={whiteWineClasses} value="hvitvin" aria-label="rødvin">
           <Typography variant="subtitle2">
             Hvitvin
+          </Typography>
+        </ToggleButton>
+        <ToggleButton classes={roseClasses} value="rosevin" aria-label="rosévin">
+          <Typography variant="subtitle2">
+            Rosévin
           </Typography>
         </ToggleButton>
         <ToggleButton classes={bubbleClasses} value="musserende_vin" aria-label="musserende">
