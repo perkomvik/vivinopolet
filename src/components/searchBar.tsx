@@ -128,11 +128,13 @@ const SearchBar = (props: { stores: Store[], currentStoreId }) => {
             />
           }
         />
-        {isLoading ?
-          <CircularProgress style={{ zIndex: 1502 }} color="inherit" />
-          :
-          <SearchIcon style={{ color: "white" }} fontSize="large" />
-        }
+        <div style={{ minWidth: "35px" }}>
+          {isLoading ?
+            <CircularProgress size={"2em"} color="inherit" />
+            :
+            <SearchIcon style={{ color: "white" }} fontSize="large" />
+          }
+        </div>
         <div className={classes.grow} />
       </Toolbar>
     </AppBar>
