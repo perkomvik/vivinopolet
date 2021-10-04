@@ -58,7 +58,7 @@ const Home = ({ stores }) => {
 
   return (
     <Container className={classes.container}>
-      <SearchBar stores={stores} />
+      <SearchBar stores={stores} currentStoreId={0} />
       <main className={classes.main}>
         <Typography variant="h6" className={classes.h6}>
           Søk etter vinmonopol
