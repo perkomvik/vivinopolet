@@ -107,7 +107,7 @@ const storePage = (props: {
 
   return (
     <Container>
-      <SearchBar stores={props.stores} />
+      <SearchBar stores={props.stores} currentStoreId={props.id} />
       <div style={{ paddingTop: "6.5em" }}>
         <Typography variant="h5" align="center">
           {storeWithStock.name}

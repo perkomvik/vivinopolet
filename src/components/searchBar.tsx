@@ -11,7 +11,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import SearchIcon from '@material-ui/icons/Search';
 
 import Store from "../Interfaces/Store";
-import { makeStyles, createStyles } from "@material-ui/core";
+import { makeStyles, createStyles, CircularProgress } from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Product from "../Interfaces/Product";
@@ -81,31 +81,21 @@ const useLabelStyle = makeStyles(() =>
   })
 );
 
-const SearchBar = (props: { stores: Store[] }) => {
+const SearchBar = (props: { stores: Store[], currentStoreId }) => {
   const classes = useStyles();
   const autocompleteClasses = useAutocompleteSyle();
   const inputClasses = useInputStyle();
   const labelClasses = useLabelStyle();
 
-  const [store, setStore] = useState<Store | null>(null);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const router = useRouter()
-  const onStoreChange = (event: any, newValue: Store | null) => {
-    setStore(newValue);
-  }
-  const onSearch = (event: any) => {
-    if (store !== null) {
+  const onStoreChange = (event: any, store: Store | null) => {
+    if (store !== null && store.id !== props.currentStoreId) {
+      setLoading(true);
       router.push(`/stores/${encodeURIComponent(store?.id)}`)
     }
   }
 
-  const onKeyDown = (event: any) => {
-    if (event.key === "Enter") {
-      onSearch(event);
-    }
-  }
-
-
-  const searchUrl = store ? `/stores/${encodeURIComponent(store?.id)}` : "#";
   return (
     <AppBar>
       <Toolbar className={classes.justifycenter}>
@@ -135,15 +125,14 @@ const SearchBar = (props: { stores: Store[] }) => {
               InputLabelProps={{ classes: labelClasses }}
               label="Vinmonopol"
               variant="outlined"
-              onKeyDown={onKeyDown}
             />
           }
         />
-        <Link href={searchUrl}>
-          <IconButton onClick={onSearch}>
-            <SearchIcon style={{ color: "white" }} fontSize="large" />
-          </IconButton>
-        </Link>
+        {isLoading ?
+          <CircularProgress style={{ zIndex: 1502 }} color="inherit" />
+          :
+          <SearchIcon style={{ color: "white" }} fontSize="large" />
+        }
         <div className={classes.grow} />
       </Toolbar>
     </AppBar>
