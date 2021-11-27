@@ -9,7 +9,7 @@ import WarningIcon from "@material-ui/icons/Warning";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import StarsIcon from '@material-ui/icons/Stars';
-import ShoppingBasketIcon from '@material-ui/icons/ShoppingBasket';
+import ShoppingBasketOutlinedIcon from '@material-ui/icons/ShoppingBasketOutlined';
 import { mapCountryToCode } from "../helpers/countryUtils";
 import Flag from 'react-world-flags'
 import Link from "@material-ui/core/Link";
@@ -82,16 +82,17 @@ const ProductCard = (props: { product: Product }) => {
             item
             xs={9}
             className={classes.content}
+            style={{ paddingTop: "1em", paddingRight: "2em" }}
           >
-            <Grid item style={{ paddingTop: "1em", paddingRight: "1em" }}>
+            <Grid item>
               <Typography>{props.product.name}</Typography>
             </Grid>
-            <Grid item>
+            <Grid>
               <Grid container justifyContent="flex-start">
                 <Grid item style={{ paddingRight: "0.5em", marginLeft: "-2px" }}>
                   <StarsIcon />
                 </Grid>
-                <Grid item style={{ minWidth: "50%" }}>
+                <Grid item style={{ minWidth: "45%" }}>
                   <Link href={props.product.vivino_url} color="inherit" target="_blank">
                     <Typography display="inline">
                       {props.product.score}
@@ -99,13 +100,8 @@ const ProductCard = (props: { product: Product }) => {
                     {renderNRatings()}
                   </Link>
                 </Grid>
-                <Grid item style={{ marginRight: "0.5em" }}>
-                  <ShoppingBasketIcon />
-                </Grid>
-                <Grid item>
-                  <Typography>
-                    {props.product.stock}
-                  </Typography>
+                <Grid>
+                  <Typography>{props.product.price.formattedValue}</Typography>
                 </Grid>
               </Grid>
             </Grid>
@@ -114,13 +110,23 @@ const ProductCard = (props: { product: Product }) => {
                 container
                 justifyContent="space-between"
               >
-                <Grid item xs={3}>
+                <Grid item xs={4}>
+                  <Grid container>
+                    <Grid item>
+                      <ShoppingBasketOutlinedIcon fontSize="small" />
+                    </Grid>
+                    <Grid item style={{ paddingLeft: "0.5em" }}>
+                      <Typography variant="caption" color="textSecondary">
+                        {props.product.stock}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={4}>
                   <Typography variant="caption" color="textSecondary">{props.product.volume.formattedValue}</Typography>
                 </Grid>
-                <Grid item xs={5}>
-                  <Typography variant="caption" color="textSecondary">{props.product.price.formattedValue}</Typography>
-                </Grid>
-                <Grid item xs={3}>
+
+                <Grid item xs={2}>
                   <Flag style={flagStyle} code={countryCode} height="16" />
                 </Grid>
               </Grid>
