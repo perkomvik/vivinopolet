@@ -1,7 +1,5 @@
 import SearchBar from "../../components/searchBar";
 import { getProducts, getStores, getStoresWithStock } from "../../helpers/cloudStorageClient";
-import path from "path";
-import fs from "fs/promises"
 import Store from "../../Interfaces/Store";
 import Product from "../../Interfaces/Product";
 import React, { useState } from "react";
@@ -18,9 +16,11 @@ import WineTypeSelector from "../../components/wineTypeSelector";
 import Constants from "../../helpers/constants";
 import Tooltip from "@material-ui/core/Tooltip";
 
+import * as FileActions from "../../helpers/fileActions";
+
 const STEP_SIZE = 10;
 const MIN_PRICE = 50;
-const MAX_PRICE = 300;
+const MAX_PRICE = 400;
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -144,54 +144,14 @@ const storePage = (props: {
   )
 }
 
-const storesFilePath = path.join(process.cwd(), "data/stores.json");
-const storesWithStockFilePath = path.join(process.cwd(), "data/stores_with_stock.json");
-
-const saveStoresToFile = async (stores) => {
-  await fs.writeFile(storesFilePath, JSON.stringify(stores));
-}
-
-const saveStoreStockToFile = async (storesWithStock) => {
-  await fs.writeFile(storesWithStockFilePath, JSON.stringify(storesWithStock));
-}
-
-const saveProductsToFile = async (wineType: string, products: Record<string, Product>) => {
-  await fs.writeFile(`data/${wineType}.json`, JSON.stringify(products));
-}
-
-const readStoresFromFile = async (): Promise<Store[]> => {
-  const storesFile = await fs.readFile(storesFilePath);
-  const storeObj = JSON.parse(storesFile.toString());
-  return storeObj;
-}
-
-const readProductsFromFile = async (): Promise<Record<string, Record<string, Product>>> => {
-  let products: Record<string, Record<string, Product>> = {}
-  for (const wineType of Constants.wineTypes) {
-    const productsFilePath = path.join(process.cwd(), `data/${wineType}.json`);
-    const productsFile = await fs.readFile(productsFilePath);
-    const productsObj: Record<string, Product> = JSON.parse(productsFile.toString());
-
-    products[wineType] = { ...productsObj }
-  }
-  return products
-}
-
-const readStoreStockFromFile = async (): Promise<StoreWithStock[]> => {
-  const storeStockFilePath = path.join(storesWithStockFilePath);
-  const storeStockFile = await fs.readFile(storeStockFilePath);
-  const storeStock = JSON.parse(storeStockFile.toString());
-  return storeStock;
-}
-
 export async function getStaticPaths() {
   const stores: Store[] = await getStores();
   const storesWithStock: StoreWithStock[] = await getStoresWithStock();
-  await saveStoresToFile(stores);
-  await saveStoreStockToFile(storesWithStock);
+  await FileActions.saveStoresToFile(stores);
+  await FileActions.saveStoreStockToFile(storesWithStock);
   for (const wineType of Constants.wineTypes) {
     const products = await getProducts(wineType);
-    await saveProductsToFile(wineType, products);
+    await FileActions.saveProductsToFile(wineType, products);
   }
 
   const paths = stores.map((store) => ({
@@ -206,9 +166,9 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  const stores = await readStoresFromFile();
-  const products = await readProductsFromFile();
-  const storeStock = await readStoreStockFromFile();
+  const stores = await FileActions.readStoresFromFile();
+  const products = await FileActions.readProductsFromFile();
+  const storeStock = await FileActions.readStoreStockFromFile();
   let productsInStock: Record<string, Product[]> = {};
   const storeWithStock = storeStock.find(s => s.id == context.params.id)
   Object.entries(storeWithStock.stock)
@@ -216,7 +176,6 @@ export async function getStaticProps(context) {
       let stock = []
       items.forEach(item => {
         if (products[wine_type][item.code]) {
-          products[wine_type][item.code]["stock"] = item.stock
           stock.push(products[wine_type][item.code])
         }
       })
@@ -230,9 +189,8 @@ export async function getStaticProps(context) {
       storesWithStock: storeStock,
       id: context.params.id,
       key: context.params.id
-    },
+    }
   };
-
 }
 
 export default storePage;
