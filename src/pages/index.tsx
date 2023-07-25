@@ -79,7 +79,7 @@ const Home = ({ stores }) => {
           rel="noopener noreferrer"
         >
           <Typography variant="h6">
-            av perkomvik
+            av per
           </Typography>
         </a>
       </footer>
