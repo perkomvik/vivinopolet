@@ -1,33 +1,31 @@
-import lightGreen from "@material-ui/core/colors/lightGreen";
-import red from "@material-ui/core/colors/red";
-import yellow from "@material-ui/core/colors/yellow";
-import { createTheme } from "@material-ui/core/styles";
+import { lightGreen, red, yellow } from "@mui/material/colors";
+import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   typography: {
     fontFamily: [
-      'Roboto Mono',
+      "Roboto Mono",
       '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
+      "Arial",
+      "sans-serif",
       '"Apple Color Emoji"',
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
-    ].join(','),
+    ].join(","),
     body1: {
-      fontSize: '0.9rem'
-    }
+      fontSize: "0.9rem",
+    },
   },
   palette: {
     primary: {
       main: red[800],
     },
     secondary: {
-      main: lightGreen[500]
+      main: lightGreen[500],
     },
     warning: {
-      main: yellow[700]
-    }
+      main: yellow[700],
+    },
   },
 });
 

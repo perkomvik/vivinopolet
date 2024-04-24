@@ -1,144 +1,102 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import SearchIcon from '@material-ui/icons/Search';
+import Out from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Autocomplete from "@mui/material/Autocomplete";
+import SearchIcon from "@mui/icons-material/Search";
 
 import Store from "../Interfaces/Store";
-import { makeStyles, createStyles, CircularProgress } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
+import { makeStyles, createStyles, CircularProgress } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
 import Product from "../Interfaces/Product";
-import Hidden from "@material-ui/core/Hidden";
+import Hidden from "@mui/material/Hidden";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    justifycenter: {
-      justifyContent: "center",
-    },
-    grow: {
-      flexGrow: 1
-    },
-    avatar: {
-      width: "2.5em",
-      height: "2.5em"
-    },
-    avatarButton: {
-      borderRadius: "2.5em"
-    }
-  })
-);
-
-const useAutocompleteSyle = makeStyles(() =>
-  createStyles({
-    clearIndicator: {
-      color: "white",
-    },
-    popupIndicator: {
-      color: "white",
-    }
-  })
-);
-
-const useInputStyle = makeStyles(() =>
-  createStyles({
-    root: {
-      color: "white",
-      '&hover &$focused $notchedOutline': {
-        borderColor: "white",
-      }
-    },
-
-    focused: {
+const StyledTextField = styled(TextField)({
+  "& label": {
+    color: "white",
+  },
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
       borderColor: "white",
-      color: "white",
     },
-
-    notchedOutline: {
-      borderWidth: '1px',
-      borderColor: 'white !important'
+    "&:hover fieldset": {
+      borderColor: "white",
     },
-  }
-  ));
-
-const useLabelStyle = makeStyles(() =>
-  createStyles({
-    root: {
-      color: "white",
-      '&$focused': {
-        color: "white"
-      }
+  },
+  "& .Mui-focused": {
+    borderColor: "white",
+    color: "white",
+    "& .MuiOutlinedInput-notchedOutline": {
+      borderWidth: "1px",
+      borderColor: "white !important",
     },
-    focused: {
-      color: "white",
-    }
-  })
-);
+  },
+});
 
-const SearchBar = (props: { stores: Store[], currentStoreId }) => {
-  const classes = useStyles();
-  const autocompleteClasses = useAutocompleteSyle();
-  const inputClasses = useInputStyle();
-  const labelClasses = useLabelStyle();
-
+const SearchBar = (props: { stores: Store[]; currentStoreId }) => {
   const [isLoading, setLoading] = useState<boolean>(false);
-  const router = useRouter()
+  const router = useRouter();
   const onStoreChange = (event: any, store: Store | null) => {
     if (store !== null && store.id !== props.currentStoreId) {
       setLoading(true);
-      router.push(`/stores/${encodeURIComponent(store?.id)}`)
+      router.push(`/stores/${encodeURIComponent(store?.id)}`);
     }
-  }
-
+  };
   return (
     <AppBar>
-      <Toolbar className={classes.justifycenter}>
-        <div className={classes.grow}>
+      <Toolbar sx={{ justifyContent: "center" }}>
+        <Box sx={{ flexGrow: 1 }}>
           <Link href="/">
-            <Button className={classes.avatarButton}>
-              <Avatar alt="V" src="/logo.png" className={classes.avatar} />
+            <Button sx={{ borderRadius: "2.5em" }}>
+              <Avatar
+                alt="V"
+                src="/logo.png"
+                sx={{ width: "2.5em", height: "2.5em" }}
+              />
             </Button>
           </Link>
-        </div>
+        </Box>
         <Hidden smDown implementation="css">
-          <Typography variant="h6">
-            Velg vinmonopol:
-          </Typography>
+          <Typography variant="h6">Velg vinmonopol:</Typography>
         </Hidden>
         <Autocomplete
           id="search-box"
           options={props.stores}
-          getOptionLabel={(option) => option.name}
-          classes={autocompleteClasses}
-          style={{ width: "300px", margin: "1em" }}
+          getOptionLabel={(option: Store) => option.name}
+          sx={{
+            width: "300px",
+            margin: "1em",
+            "& .MuiAutocomplete-popupIndicator": { color: "white" },
+          }}
           onChange={onStoreChange}
-          renderInput={(params) =>
-            <TextField
+          renderInput={(params) => (
+            <StyledTextField
               {...params}
-              InputProps={{ ...params.InputProps, classes: inputClasses }}
-              InputLabelProps={{ classes: labelClasses }}
               label="Vinmonopol"
               variant="outlined"
             />
-          }
+          )}
         />
         <div style={{ minWidth: "35px" }}>
-          {isLoading ?
+          {isLoading ? (
             <CircularProgress size={"2em"} color="inherit" />
-            :
+          ) : (
             <SearchIcon style={{ color: "white" }} fontSize="large" />
-          }
+          )}
         </div>
-        <div className={classes.grow} />
+        <Box sx={{ flexGrow: 1 }} />
       </Toolbar>
     </AppBar>
-  )
-}
+  );
+};
 
 export default SearchBar;

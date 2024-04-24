@@ -6,21 +6,28 @@
     "build": "next build",
     "start": "next start -p ${PORT:=3000}"
   },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
   "dependencies": {
-    "@google-cloud/storage": "^5.12.0",
-    "@material-ui/core": "^4.12.1",
-    "@material-ui/icons": "^4.11.2",
-    "@material-ui/lab": "^4.0.0-alpha.60",
+    "@emotion/cache": "^11.11.0",
+    "@emotion/react": "^11.11.4",
+    "@emotion/server": "^11.11.0",
+    "@emotion/styled": "^11.11.5",
+    "@google-cloud/storage": "^7.10.1",
+    "@mui/icons-material": "^5.15.15",
+    "@mui/material": "^5.15.15",
+    "@mui/material-nextjs": "^5.15.11",
     "axios": "^0.21.1",
     "mapbox-gl": "^2.3.1",
-    "next": "latest",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "next": "14.2.2",
     "react-world-flags": "^1.4.0",
     "typeface-roboto": "^1.1.13"
   },
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^4.3.5"
+    "@types/node": "20.12.7",
+    "typescript": "^5.4.5"
   }
 }

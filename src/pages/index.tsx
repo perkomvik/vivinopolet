@@ -1,33 +1,38 @@
 import React from "react";
 
-import { makeStyles, createStyles } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import SubdirectoryArrowRightIcon from '@material-ui/icons/SubdirectoryArrowRight';
+import { styled } from '@mui/material/styles';
+
+import { makeStyles, createStyles } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
 
 import SearchBar from "../components/searchBar";
 import { getStores } from "../helpers/cloudStorageClient";
-import Container from "@material-ui/core/Container";
+import Container from "@mui/material/Container";
 
-export async function getStaticProps() {
-  const stores = await getStores();
-  return {
-    props: {
-      stores
-    },
-  }
-}
+const PREFIX = 'Home';
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    h4: {
+const classes = {
+  h4: `${PREFIX}-h4`,
+  h6: `${PREFIX}-h6`,
+  footer: `${PREFIX}-footer`,
+  container: `${PREFIX}-container`,
+  main: `${PREFIX}-main`
+};
+
+const StyledContainer = styled(Container)(() =>
+  ({
+    [`& .${classes.h4}`]: {
       display: "flex",
       flex: 1,
-      alignItems: "center"
+      alignItems: "center",
     },
-    h6: {
-      paddingTop: "20px"
+
+    [`& .${classes.h6}`]: {
+      paddingTop: "20px",
     },
-    footer: {
+
+    [`& .${classes.footer}`]: {
       width: "100%",
       height: "100px",
       borderTop: "1px solid #eaeaea",
@@ -35,14 +40,16 @@ const useStyles = makeStyles(() =>
       justifyContent: "center",
       alignItems: "center",
     },
-    container: {
+
+    [`&.${classes.container}`]: {
       minHeight: "100vh",
       display: "flex",
       flexDirection: "column",
       justifyContent: "center",
-      alignItems: "center"
+      alignItems: "center",
     },
-    main: {
+
+    [`& .${classes.main}`]: {
       padding: "5rem 0",
       flex: 1,
       display: "flex",
@@ -50,14 +57,22 @@ const useStyles = makeStyles(() =>
       justifyContent: "center",
       alignItems: "center",
     }
-  })
-);
+  }));
+
+export async function getStaticProps() {
+  const stores = await getStores();
+  return {
+    props: {
+      stores,
+    },
+  };
+}
 
 const Home = ({ stores }) => {
-  const classes = useStyles();
+
 
   return (
-    <Container className={classes.container}>
+    <StyledContainer className={classes.container}>
       <SearchBar stores={stores} currentStoreId={0} />
       <main className={classes.main}>
         <Typography variant="h6" className={classes.h6}>
@@ -66,9 +81,7 @@ const Home = ({ stores }) => {
         </Typography>
 
         <div className={classes.h4}>
-          <Typography variant="h4">
-            Velkommen til Vivinopolet!
-          </Typography>
+          <Typography variant="h4">Velkommen til Vivinopolet!</Typography>
         </div>
       </main>
 
@@ -78,13 +91,11 @@ const Home = ({ stores }) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Typography variant="h6">
-            av per
-          </Typography>
+          <Typography variant="h6">av per</Typography>
         </a>
       </footer>
-    </Container>
-  )
+    </StyledContainer>
+  );
 };
 
 export default Home;
