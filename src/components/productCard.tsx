@@ -1,35 +1,31 @@
 import Card from "@mui/material/Card";
-import { styled } from '@mui/material/styles';
-import CardActionArea from "@mui/material/CardActionArea";
+import { styled } from "@mui/material/styles";
 import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
+import CardActionArea from "@mui/material/CardActionArea";
 import Typography from "@mui/material/Typography";
 import Product from "../Interfaces/Product";
-import { makeStyles, createStyles } from "@mui/material/styles";
 import WarningIcon from "@mui/icons-material/Warning";
 import React from "react";
 import Grid from "@mui/material/Grid";
-import StarsIcon from "@mui/icons-material/Stars";
+import StarOutlineIcon from "@mui/icons-material/StarOutline";
+import LaunchIcon from "@mui/icons-material/Launch";
 import ShoppingBasketOutlinedIcon from "@mui/icons-material/ShoppingBasketOutlined";
 import { mapCountryToCode } from "../helpers/countryUtils";
 import Flag from "react-world-flags";
 import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
 
-const PREFIX = 'ProductCard';
+const PREFIX = "ProductCard";
 
 const classes = {
   warning: `${PREFIX}-warning`,
   root: `${PREFIX}-root`,
   media: `${PREFIX}-media`,
   content: `${PREFIX}-content`,
-  score: `${PREFIX}-score`
+  score: `${PREFIX}-score`,
 };
 
-const StyledCard = styled(Card)((
-  {
-    theme
-  }
-) => ({
+const StyledCard = styled(Card)(({ theme }) => ({
   [`& .${classes.warning}`]: {
     color: theme.palette.warning.main,
     fontSize: "inherit",
@@ -56,7 +52,7 @@ const StyledCard = styled(Card)((
     display: "flex",
     alignItems: "center",
     paddingRight: "5px",
-  }
+  },
 }));
 
 const vinmonopolet_url = "https://vinmonopolet.no";
@@ -68,7 +64,6 @@ const flagStyle = {
 };
 
 const ProductCard = (props: { product: Product }) => {
-
   const image = props.product.images.find((img) => img.format === "product");
   const countryCode = mapCountryToCode(props.product.main_country.name);
 
@@ -87,8 +82,9 @@ const ProductCard = (props: { product: Product }) => {
   return (
     <StyledCard className={classes.root}>
       <CardActionArea
-        href={vinmonopolet_url + props.product.url}
-        target="_blank"
+        onClick={() =>
+          window.open(vinmonopolet_url + props.product.url, "_blank")
+        }
       >
         <Grid container spacing={1}>
           <Grid item xs={3}>
@@ -103,21 +99,23 @@ const ProductCard = (props: { product: Product }) => {
             item
             xs={9}
             className={classes.content}
-            style={{ paddingTop: "1em", paddingRight: "2em" }}
+            style={{ paddingTop: "1em", paddingRight: "1.5em" }}
           >
             <Grid item>
-              <Typography>{props.product.name}</Typography>
+              <Stack direction="row" justifyContent="space-between">
+                <Typography>{props.product.name}</Typography>
+
+                <LaunchIcon
+                  fontSize="small"
+                  sx={{ opacity: 0.33, marginRight: "-0.70em" }}
+                />
+              </Stack>
             </Grid>
             <Grid>
-              <Grid container justifyContent="flex-start">
-                <Grid
-                  item
-                  style={{ paddingRight: "0.5em", marginLeft: "-2px" }}
-                >
-                  <StarsIcon />
-                </Grid>
-                <Grid item style={{ minWidth: "45%" }}>
-                  <Link
+              <Stack direction="row" justifyContent="space-between">
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <StarOutlineIcon />
+                  <a
                     href={props.product.vivino_url}
                     color="inherit"
                     target="_blank"
@@ -126,12 +124,10 @@ const ProductCard = (props: { product: Product }) => {
                       {props.product.score}
                     </Typography>
                     {renderNRatings()}
-                  </Link>
-                </Grid>
-                <Grid>
-                  <Typography>{props.product.price.formattedValue}</Typography>
-                </Grid>
-              </Grid>
+                  </a>
+                </Stack>
+                <Typography>{props.product.price.formattedValue}</Typography>
+              </Stack>
             </Grid>
             <Grid item style={{ paddingBottom: "16px" }}>
               <Grid container justifyContent="space-between">

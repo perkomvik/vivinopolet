@@ -1,6 +1,4 @@
 import SearchBar from "../../components/searchBar";
-import { styled } from "@mui/material/styles";
-import { styled } from "@mui/material/styles";
 import {
   getProducts,
   getStores,
@@ -17,29 +15,15 @@ import ListItem from "@mui/material/ListItem";
 import List from "@mui/material/List";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import { makeStyles, createStyles } from "@mui/material/styles";
 import Slider from "@mui/material/Slider";
 import Grid from "@mui/material/Grid";
 import WineTypeSelector from "../../components/wineTypeSelector";
 import Constants from "../../helpers/constants";
-import Tooltip from "@mui/material/Tooltip";
+import Stack from "@mui/material/Stack";
 
 const STEP_SIZE = 10;
-const MIN_PRICE = 50;
-const MAX_PRICE = 300;
-const useStyles = makeStyles(() =>
-  createStyles({
-    listItem: {
-      justifyContent: "center",
-    },
-    slider: {
-      maxWidth: "95%",
-    },
-    sliderContainer: {
-      maxWidth: "500px",
-    },
-  })
-);
+const MIN_PRICE = 100;
+const MAX_PRICE = 800;
 
 const storePage = (props: {
   stores: Store[];
@@ -48,7 +32,6 @@ const storePage = (props: {
   id: number;
   key: number;
 }) => {
-  const classes = useStyles();
   const [wineType, setWineType] = useState<string>("rødvin");
   const [price, setPrice] = useState<number>(Infinity);
   const [visibleProducts, setVisibleProducts] = useState<Product[]>(
@@ -79,48 +62,14 @@ const storePage = (props: {
 
   const storeWithStock = props.storesWithStock.find((s) => s.id == props.id);
   const productCards = visibleProducts.map((product) => (
-    <ListItem className={classes.listItem} key={product.code} disableGutters>
+    <ListItem
+      sx={{ justifyContent: "center" }}
+      key={product.code}
+      disableGutters
+    >
       <ProductCard product={product} />
     </ListItem>
   ));
-
-  const ValueLabelComponent = (props) => {
-    const { children, open, value } = props;
-    const popperProps = {
-      disablePortal: true,
-      popperOptions: {
-        modifiers: {
-          flip: {
-            enabled: false,
-          },
-          preventOverflow: {
-            enabled: true,
-          },
-        },
-      },
-    };
-    const useTooltipStyles = makeStyles(() => ({
-      [`& .${classes.tooltipPlacementTop}`]: {
-        marginBottom: "1.25em",
-      },
-
-      [`& .${classes.popper}`]: {
-        zIndex: 1000,
-      },
-    }));
-    return (
-      <Tooltip
-        classes={useTooltipStyles()}
-        open={open}
-        enterTouchDelay={0}
-        placement="top"
-        title={value}
-        PopperProps={popperProps}
-      >
-        {children}
-      </Tooltip>
-    );
-  };
 
   return (
     <Container>
@@ -134,35 +83,29 @@ const storePage = (props: {
           wineTypes={Constants.wineTypes}
           onChange={handleWineTypeChange}
         />
-
-        <Grid
-          container
-          spacing={2}
+        <Stack
+          direction="row"
           justifyContent="center"
-          style={{ marginTop: "2em" }}
+          alignItems="center"
+          spacing={2}
+          sx={{ paddingTop: "2.2em", paddingRight: "2em" }}
         >
-          <Grid item>
-            <Typography variant="h6" id="discrete-slider" gutterBottom>
-              Makspris
-            </Typography>
-          </Grid>
-          <Grid item xs className={classes.sliderContainer}>
-            <Slider
-              className={classes.slider}
-              aria-labelledby="discrete-slider"
-              ValueLabelComponent={ValueLabelComponent}
-              valueLabelDisplay="on"
-              valueLabelFormat={(x) =>
-                x > MAX_PRICE ? "kr " + MAX_PRICE + "+" : "kr " + x
-              }
-              defaultValue={Infinity}
-              step={STEP_SIZE}
-              min={MIN_PRICE}
-              max={MAX_PRICE + 10}
-              onChangeCommitted={handleSliderCommit}
-            />
-          </Grid>
-        </Grid>
+          <Typography fontSize="16px" id="discrete-slider">
+            Makspris
+          </Typography>
+          <Slider
+            aria-labelledby="discrete-slider"
+            valueLabelDisplay="on"
+            valueLabelFormat={(x) =>
+              x > MAX_PRICE ? "kr " + MAX_PRICE + "+" : "kr " + x
+            }
+            defaultValue={Infinity}
+            step={STEP_SIZE}
+            min={MIN_PRICE}
+            max={MAX_PRICE + 10}
+            onChangeCommitted={handleSliderCommit}
+          />
+        </Stack>
       </div>
       <List>{productCards}</List>
     </Container>

@@ -21,6 +21,9 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
 const StyledTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "white",
+  },
   "& label": {
     color: "white",
   },
