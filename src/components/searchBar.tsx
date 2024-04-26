@@ -21,6 +21,9 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
 const StyledTextField = styled(TextField)({
+  "& .MuiInputBase-input": {
+    color: "white",
+  },
   "& label.Mui-focused": {
     color: "white",
   },
@@ -79,6 +82,7 @@ const SearchBar = (props: { stores: Store[]; currentStoreId }) => {
             width: "300px",
             margin: "1em",
             "& .MuiAutocomplete-popupIndicator": { color: "white" },
+            "& .MuiAutocomplete-clearIndicator": { color: "white" },
           }}
           onChange={onStoreChange}
           renderInput={(params) => (

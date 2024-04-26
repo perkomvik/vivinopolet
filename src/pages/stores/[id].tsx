@@ -88,7 +88,13 @@ const storePage = (props: {
           justifyContent="center"
           alignItems="center"
           spacing={2}
-          sx={{ paddingTop: "2.2em", paddingRight: "2em" }}
+          sx={{
+            paddingTop: "2.2em",
+            paddingRight: "2em",
+            width: "100%",
+            maxWidth: "600px",
+            margin: "0 auto",
+          }}
         >
           <Typography fontSize="16px" id="discrete-slider">
             Makspris
