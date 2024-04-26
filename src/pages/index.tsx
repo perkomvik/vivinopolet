@@ -1,63 +1,59 @@
-import React from "react";
+import { styled } from "@mui/material/styles";
 
-import { styled } from '@mui/material/styles';
-
-import { makeStyles, createStyles } from "@mui/material";
-import Typography from "@mui/material/Typography";
 import SubdirectoryArrowRightIcon from "@mui/icons-material/SubdirectoryArrowRight";
+import Typography from "@mui/material/Typography";
 
+import Container from "@mui/material/Container";
 import SearchBar from "../components/searchBar";
 import { getStores } from "../helpers/cloudStorageClient";
-import Container from "@mui/material/Container";
 
-const PREFIX = 'Home';
+const PREFIX = "Home";
 
 const classes = {
   h4: `${PREFIX}-h4`,
   h6: `${PREFIX}-h6`,
   footer: `${PREFIX}-footer`,
   container: `${PREFIX}-container`,
-  main: `${PREFIX}-main`
+  main: `${PREFIX}-main`,
 };
 
-const StyledContainer = styled(Container)(() =>
-  ({
-    [`& .${classes.h4}`]: {
-      display: "flex",
-      flex: 1,
-      alignItems: "center",
-    },
+const StyledContainer = styled(Container)(() => ({
+  [`& .${classes.h4}`]: {
+    display: "flex",
+    flex: 1,
+    alignItems: "center",
+  },
 
-    [`& .${classes.h6}`]: {
-      paddingTop: "20px",
-    },
+  [`& .${classes.h6}`]: {
+    paddingTop: "20px",
+  },
 
-    [`& .${classes.footer}`]: {
-      width: "100%",
-      height: "100px",
-      borderTop: "1px solid #eaeaea",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    },
+  [`& .${classes.footer}`]: {
+    width: "100%",
+    height: "100px",
+    borderTop: "1px solid #eaeaea",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
-    [`&.${classes.container}`]: {
-      minHeight: "100vh",
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-    },
+  [`&.${classes.container}`]: {
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
 
-    [`& .${classes.main}`]: {
-      padding: "5rem 0",
-      flex: 1,
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
-      alignItems: "center",
-    }
-  }));
+  [`& .${classes.main}`]: {
+    padding: "5rem 0",
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+}));
 
 export async function getStaticProps() {
   const stores = await getStores();
@@ -69,8 +65,6 @@ export async function getStaticProps() {
 }
 
 const Home = ({ stores }) => {
-
-
   return (
     <StyledContainer className={classes.container}>
       <SearchBar stores={stores} currentStoreId={0} />

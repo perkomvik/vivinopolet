@@ -1,24 +1,21 @@
-import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useState } from "react";
 
-import Out from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import IconButton from "@mui/material/IconButton";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Autocomplete from "@mui/material/Autocomplete";
 import SearchIcon from "@mui/icons-material/Search";
+import AppBar from "@mui/material/AppBar";
+import Autocomplete from "@mui/material/Autocomplete";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
 
-import Store from "../Interfaces/Store";
-import { makeStyles, createStyles, CircularProgress } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { CircularProgress } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Product from "../Interfaces/Product";
-import Hidden from "@mui/material/Hidden";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Hidden from "@mui/material/Hidden";
 import TextField from "@mui/material/TextField";
+import { styled } from "@mui/material/styles";
+import Store from "../Interfaces/Store";
 
 const StyledTextField = styled(TextField)({
   "& .MuiInputBase-input": {

@@ -1,31 +1,30 @@
+import Container from "@mui/material/Container";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Slider from "@mui/material/Slider";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import fs from "fs/promises";
+import path from "path";
+import { useState } from "react";
+import Product from "../../Interfaces/Product";
+import Store from "../../Interfaces/Store";
+import StoreWithStock from "../../Interfaces/StoreWithStock";
+import ProductCard from "../../components/productCard";
 import SearchBar from "../../components/searchBar";
+import WineTypeSelector from "../../components/wineTypeSelector";
 import {
   getProducts,
   getStores,
   getStoresWithStock,
 } from "../../helpers/cloudStorageClient";
-import path from "path";
-import fs from "fs/promises";
-import Store from "../../Interfaces/Store";
-import Product from "../../Interfaces/Product";
-import React, { useState } from "react";
-import ProductCard from "../../components/productCard";
-import StoreWithStock from "../../Interfaces/StoreWithStock";
-import ListItem from "@mui/material/ListItem";
-import List from "@mui/material/List";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Slider from "@mui/material/Slider";
-import Grid from "@mui/material/Grid";
-import WineTypeSelector from "../../components/wineTypeSelector";
 import Constants from "../../helpers/constants";
-import Stack from "@mui/material/Stack";
 
 const STEP_SIZE = 10;
 const MIN_PRICE = 100;
 const MAX_PRICE = 800;
 
-const storePage = (props: {
+const StorePage = (props: {
   stores: Store[];
   storesWithStock: StoreWithStock[];
   products: Record<string, Product[]>;
@@ -217,4 +216,4 @@ export async function getStaticProps(context) {
   };
 }
 
-export default storePage;
+export default StorePage;

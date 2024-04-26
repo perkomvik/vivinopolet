@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import Head from "next/head";
-import { ThemeProvider } from "@mui/material/styles";
 import { AppCacheProvider } from "@mui/material-nextjs/v13-pagesRouter";
+import { ThemeProvider } from "@mui/material/styles";
+import Head from "next/head";
+import { useEffect } from "react";
 import "../../styles/globals.css";
 import theme from "../theme";
 

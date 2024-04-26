@@ -1,7 +1,7 @@
-import { lightGreen, green, red } from "@mui/material/colors";
-import Typography from "@mui/material/Typography";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Typography from "@mui/material/Typography";
+import { green, lightGreen, red } from "@mui/material/colors";
 import React from "react";
 
 interface Props {

@@ -1,9 +1,9 @@
-import Store from "../Interfaces/Store";
+import { Storage } from "@google-cloud/storage";
 import fs from "fs/promises";
 import path from "path";
-import StoreWithStock from "../Interfaces/StoreWithStock";
-import { Storage } from "@google-cloud/storage";
 import Product from "../Interfaces/Product";
+import Store from "../Interfaces/Store";
+import StoreWithStock from "../Interfaces/StoreWithStock";
 
 export const getStores = async (local = false): Promise<Store[]> => {
   if (local) {

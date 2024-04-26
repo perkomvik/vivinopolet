@@ -1,19 +1,17 @@
-import Card from "@mui/material/Card";
-import { styled } from "@mui/material/styles";
-import CardMedia from "@mui/material/CardMedia";
-import CardActionArea from "@mui/material/CardActionArea";
-import Typography from "@mui/material/Typography";
-import Product from "../Interfaces/Product";
-import WarningIcon from "@mui/icons-material/Warning";
-import React from "react";
-import Grid from "@mui/material/Grid";
-import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import LaunchIcon from "@mui/icons-material/Launch";
 import ShoppingBasketOutlinedIcon from "@mui/icons-material/ShoppingBasketOutlined";
-import { mapCountryToCode } from "../helpers/countryUtils";
-import Flag from "react-world-flags";
-import Link from "@mui/material/Link";
+import StarOutlineIcon from "@mui/icons-material/StarOutline";
+import WarningIcon from "@mui/icons-material/Warning";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardMedia from "@mui/material/CardMedia";
+import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import { styled } from "@mui/material/styles";
+import Flag from "react-world-flags";
+import Product from "../Interfaces/Product";
+import { mapCountryToCode } from "../helpers/countryUtils";
 
 const PREFIX = "ProductCard";
 
