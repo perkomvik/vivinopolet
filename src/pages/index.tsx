@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 
 import Container from "@mui/material/Container";
 import SearchBar from "../components/searchBar";
-import { getStores } from "../helpers/cloudStorageClient";
+import { getStores } from "../database/client";
 
 const PREFIX = "Home";
 

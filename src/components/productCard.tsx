@@ -10,7 +10,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import Flag from "react-world-flags";
-import Product from "../Interfaces/Product";
+import Wine from "../Interfaces/Wine";
 import { mapCountryToCode } from "../helpers/countryUtils";
 
 const PREFIX = "ProductCard";
@@ -60,13 +60,25 @@ const flagStyle = {
   top: "50%",
   transform: "translateY(-50%)",
 };
+interface Props {
+  product: Wine;
+  stock: number;
+}
 
-const ProductCard = (props: { product: Product }) => {
-  const image = props.product.images.find((img) => img.format === "product");
-  const countryCode = mapCountryToCode(props.product.main_country.name);
+const formatPrice = (price: number) => {
+  let formatted = price.toFixed(2);
+  formatted = formatted.replace(".", ",");
+  // Add space as thousand separator
+  formatted = formatted.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  return `kr ${formatted}`;
+};
+
+const ProductCard = (props: Props) => {
+  const { product, stock } = props;
+  const countryCode = mapCountryToCode(product.country);
 
   const renderNRatings = () => {
-    const nRatings = props.product.n_ratings;
+    const nRatings = product.rating_count;
     const shouldDisplayWarning = nRatings < 500;
     return (
       <>
@@ -79,18 +91,14 @@ const ProductCard = (props: { product: Product }) => {
   };
   return (
     <StyledCard className={classes.root}>
-      <CardActionArea
-        onClick={() =>
-          window.open(vinmonopolet_url + props.product.url, "_blank")
-        }
-      >
+      <CardActionArea onClick={() => window.open(product.url, "_blank")}>
         <Grid container spacing={1}>
           <Grid item xs={3}>
             <CardMedia
               className={classes.media}
               component="img"
-              src={image.url}
-              title={props.product.name}
+              src={product.image_url}
+              title={product.name}
             />
           </Grid>
           <Grid
@@ -101,7 +109,7 @@ const ProductCard = (props: { product: Product }) => {
           >
             <Grid item>
               <Stack direction="row" justifyContent="space-between">
-                <Typography>{props.product.name}</Typography>
+                <Typography>{product.name}</Typography>
 
                 <LaunchIcon
                   fontSize="small"
@@ -113,18 +121,12 @@ const ProductCard = (props: { product: Product }) => {
               <Stack direction="row" justifyContent="space-between">
                 <Stack direction="row" spacing={1} alignItems="center">
                   <StarOutlineIcon />
-                  <a
-                    href={props.product.vivino_url}
-                    color="inherit"
-                    target="_blank"
-                  >
-                    <Typography display="inline">
-                      {props.product.score}
-                    </Typography>
+                  <a href={product.vivino_url} color="inherit" target="_blank">
+                    <Typography display="inline">{product.rating}</Typography>
                     {renderNRatings()}
                   </a>
                 </Stack>
-                <Typography>{props.product.price.formattedValue}</Typography>
+                <Typography>{formatPrice(product.price)}</Typography>
               </Stack>
             </Grid>
             <Grid item style={{ paddingBottom: "16px" }}>
@@ -136,14 +138,14 @@ const ProductCard = (props: { product: Product }) => {
                     </Grid>
                     <Grid item style={{ paddingLeft: "0.5em" }}>
                       <Typography variant="caption" color="textSecondary">
-                        {props.product.stock}
+                        {stock}
                       </Typography>
                     </Grid>
                   </Grid>
                 </Grid>
                 <Grid item xs={4}>
                   <Typography variant="caption" color="textSecondary">
-                    {props.product.volume.formattedValue}
+                    {product.volume.toString() + " cl"}
                   </Typography>
                 </Grid>
 

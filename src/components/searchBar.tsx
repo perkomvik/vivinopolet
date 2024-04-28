@@ -51,7 +51,7 @@ const SearchBar = (props: { stores: Store[]; currentStoreId }) => {
   const onStoreChange = (event: any, store: Store | null) => {
     if (store !== null && store.id !== props.currentStoreId) {
       setLoading(true);
-      router.push(`/stores/${encodeURIComponent(store?.id)}`);
+      router.push(`/stores/${encodeURIComponent(store.id)}`);
     }
   };
   return (
@@ -75,6 +75,7 @@ const SearchBar = (props: { stores: Store[]; currentStoreId }) => {
           id="search-box"
           options={props.stores}
           getOptionLabel={(option: Store) => option.name}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
           sx={{
             width: "300px",
             margin: "1em",

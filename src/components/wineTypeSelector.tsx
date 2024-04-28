@@ -61,22 +61,7 @@ const WineTypeSelector = (props: Props) => {
         <Typography variant="subtitle2">Hvitvin</Typography>
       </ToggleButton>
       <ToggleButton
-        value="rosevin"
-        aria-label="rosévin"
-        sx={{
-          "&.Mui-selected": {
-            backgroundColor: red[300],
-            color: "white",
-            "&:hover": {
-              backgroundColor: red[300],
-            },
-          },
-        }}
-      >
-        <Typography variant="subtitle2">Rosévin</Typography>
-      </ToggleButton>
-      <ToggleButton
-        value="musserende_vin"
+        value="musserende vin"
         aria-label="musserende"
         sx={{
           "&.Mui-selected": {

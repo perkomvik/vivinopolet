@@ -1,5 +1,10 @@
 class Constants {
-  static wineTypes = ["rødvin", "hvitvin", "musserende_vin", "rosevin"];
+  static wineTypes = {
+    red: "rødvin",
+    white: "hvitvin",
+    sparkling: "musserende vin",
+    rose: "rosevin",
+  };
 }
 
 export default Constants;
