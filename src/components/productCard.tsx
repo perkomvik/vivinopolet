@@ -12,6 +12,7 @@ import Image from "next/image";
 import Flag from "react-world-flags";
 import Wine from "../Interfaces/Wine";
 import { mapCountryToCode } from "../helpers/countryUtils";
+import { getWineUrl } from "../helpers/vivino";
 
 const PREFIX = "ProductCard";
 
@@ -106,7 +107,7 @@ const ProductCard = (props: Props) => {
             item
             xs={9}
             className={classes.content}
-            style={{ paddingTop: "1em", paddingRight: "1.5em" }}
+            style={{ paddingTop: "0.5em", paddingRight: "1em" }}
           >
             <Grid item>
               <Stack direction="row" justifyContent="space-between">
@@ -114,7 +115,7 @@ const ProductCard = (props: Props) => {
 
                 <LaunchIcon
                   fontSize="small"
-                  sx={{ opacity: 0.33, marginRight: "-0.70em" }}
+                  sx={{ opacity: 0.33, marginRight: "-0.35em" }}
                 />
               </Stack>
             </Grid>
@@ -122,7 +123,11 @@ const ProductCard = (props: Props) => {
               <Stack direction="row" justifyContent="space-between">
                 <Stack direction="row" spacing={1} alignItems="center">
                   <StarOutlineIcon />
-                  <a href={product.vivino_url} color="inherit" target="_blank">
+                  <a
+                    href={getWineUrl(product.name)}
+                    color="inherit"
+                    target="_blank"
+                  >
                     <Typography display="inline">{product.rating}</Typography>
                     {renderNRatings()}
                   </a>
