@@ -4,11 +4,11 @@ import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import WarningIcon from "@mui/icons-material/Warning";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
-import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
+import Image from "next/image";
 import Flag from "react-world-flags";
 import Wine from "../Interfaces/Wine";
 import { mapCountryToCode } from "../helpers/countryUtils";
@@ -92,13 +92,14 @@ const ProductCard = (props: Props) => {
   return (
     <StyledCard className={classes.root}>
       <CardActionArea onClick={() => window.open(product.url, "_blank")}>
-        <Grid container spacing={1}>
-          <Grid item xs={3}>
-            <CardMedia
-              className={classes.media}
-              component="img"
+        <Grid container>
+          <Grid item xs={3} sx={{ position: "relative", height: "175px" }}>
+            <Image
+              style={{ objectFit: "contain", padding: "4px" }}
               src={product.image_url}
+              alt="Product image"
               title={product.name}
+              fill
             />
           </Grid>
           <Grid
