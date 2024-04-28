@@ -20,6 +20,7 @@ import Store from "../Interfaces/Store";
 const StyledTextField = styled(TextField)({
   "& .MuiInputBase-input": {
     color: "white",
+    fontSize: "16px",
   },
   "& label.Mui-focused": {
     color: "white",
