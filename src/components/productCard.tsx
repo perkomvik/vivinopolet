@@ -98,7 +98,7 @@ const ProductCard = (props: Props) => {
             <Image
               style={{ objectFit: "contain", padding: "4px" }}
               src={product.image_url}
-              unoptimized={product.rating < 4.2}
+              unoptimized={product.rating > 4}
               alt="Product image"
               title={product.name}
               fill
