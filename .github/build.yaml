@@ -1,0 +1,12 @@
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 */2 * *"   # <=== Change this value
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Netlify Webhook
+      run: |
+          wget ${{ vars.BUILD_HOOK }}
