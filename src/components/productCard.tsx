@@ -12,7 +12,7 @@ import Image from "next/image";
 import Flag from "react-world-flags";
 import Wine from "../Interfaces/Wine";
 import { mapCountryToCode } from "../helpers/countryUtils";
-import { getWineUrl } from "../helpers/vivino";
+import { getVivinoUrl } from "../helpers/vivino";
 
 const PREFIX = "ProductCard";
 
@@ -125,7 +125,8 @@ const ProductCard = (props: Props) => {
                 <Stack direction="row" spacing={1} alignItems="center">
                   <StarOutlineIcon />
                   <a
-                    href={getWineUrl(product.name)}
+                    href={getVivinoUrl(product.name)}
+                    onClick={(e) => e.stopPropagation()}
                     color="inherit"
                     target="_blank"
                   >

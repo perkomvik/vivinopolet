@@ -5,7 +5,7 @@ const abbreviations = new Map<string, string>([
   ["extradry", "extra dry"],
 ]);
 
-export const getWineUrl = (wineName: string) => {
+export const getVivinoUrl = (wineName: string) => {
   let modifiedWineName = wineName.toLowerCase();
   abbreviations.forEach((value, key) => {
     modifiedWineName = modifiedWineName.replace(new RegExp(key, "gi"), value);
