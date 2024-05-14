@@ -1,7 +1,4 @@
 on:
-  push:
-    branches:
-      - build-trigger
   workflow_dispatch:
   schedule:
     - cron: "0 0 */2 * *"
