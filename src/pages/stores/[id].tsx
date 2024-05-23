@@ -141,7 +141,7 @@ export async function getStaticProps(context: {
   return {
     props: {
       stores: stores,
-      products: wines,
+      products: wines ?? [],
       storeId: storeId,
     },
   };
