@@ -1,5 +1,6 @@
 import { AppCacheProvider } from "@mui/material-nextjs/v13-pagesRouter";
 import { ThemeProvider } from "@mui/material/styles";
+import { Analytics } from "@vercel/analytics/next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -24,6 +25,7 @@ const MyApp = ({ Component, pageProps }) => {
       <ThemeProvider theme={theme}>
         <Component {...pageProps} key={router.asPath} />
       </ThemeProvider>
+      <Analytics />
     </AppCacheProvider>
   );
 };

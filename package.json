@@ -21,6 +21,7 @@
     "@mui/material": "^5.15.15",
     "@mui/material-nextjs": "^5.15.11",
     "@supabase/supabase-js": "^2.42.7",
+    "@vercel/analytics": "^1.4.1",
     "axios": "^0.21.1",
     "mapbox-gl": "^2.3.1",
     "next": "14.2.2",
